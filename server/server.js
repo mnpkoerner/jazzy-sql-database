@@ -70,7 +70,7 @@ app.post('/artist', (req, res) => {
     const queryText = `
         INSERT INTO "artists" ("name", "birthdate")
         VALUES ($1, $2);
-    `
+    `;
     pool.query(queryText, [newArtist.name, newArtist.birthdate])
         .then((result) => {
             console.log(result);
@@ -99,6 +99,17 @@ app.get('/song', (req, res) => {
 });
 
 app.post('/song', (req, res) => {
-    songList.push(req.body);
-    res.sendStatus(201);
+    const newSong = req.body;
+    const queryText = `
+    INSERT INTO "songs" ("title", "length", "released")
+    VALUES ($1, $2, $3);
+    `;
+    pool.query(queryText, [newSong.title, newSong.length, newSong.released])
+        .then((result) => {
+            console.log(result);
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log(error);
+            res.sendStatus(500);
+        });
 });
