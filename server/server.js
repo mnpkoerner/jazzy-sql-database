@@ -51,13 +51,37 @@ app.listen(PORT, () => {
 
 app.get('/artist', (req, res) => {
     console.log(`In /songs GET`);
-    res.send(artistList);
+    const queryText = `
+        SELECT * FROM "artists"
+        ORDER BY "birthdate" DESC
+        `;
+    pool.query(queryText).then((result) => {
+        console.log(result)
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log(error);
+        res.send(500);
+    })
 });
 
 app.post('/artist', (req, res) => {
-    artistList.push(req.body);
-    res.sendStatus(201);
+    console.log(req.body);
+    const newArtist = req.body;
+    const queryText = `
+        INSERT INTO "artists" ("name", "birthdate")
+        VALUES ($1, $2);
+    `
+    pool.query(queryText, [newArtist.name, newArtist.birthdate])
+        .then((result) => {
+            console.log(result);
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 });
+
+
 
 app.get('/song', (req, res) => {
     console.log(`In /songs GET`);

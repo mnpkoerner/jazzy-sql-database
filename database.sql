@@ -2,8 +2,8 @@ database name: 'jazzy_sql'
 
 CREATE TABLE "artists" (
     "id" SERIAL PRIMARY KEY,
-    "artist_name" varchar(80) not null,
-    "year_born" date
+    "name" varchar(80) not null,
+    "birthdate" date
 );
 
 CREATE TABLE "songs" (
