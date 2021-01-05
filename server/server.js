@@ -50,10 +50,10 @@ app.listen(PORT, () => {
 // ];
 
 app.get('/artist', (req, res) => {
-    console.log(`In /songs GET`);
+    console.log(`In /artist GET`);
     const queryText = `
         SELECT * FROM "artists"
-        ORDER BY "birthdate" DESC
+        ORDER BY "birthdate" DESC;
         `;
     pool.query(queryText).then((result) => {
         console.log(result)
@@ -85,7 +85,17 @@ app.post('/artist', (req, res) => {
 
 app.get('/song', (req, res) => {
     console.log(`In /songs GET`);
-    res.send(songList);
+    const queryText = `
+        SELECT * FROM "songs"
+        ORDER BY "title";
+    `;
+    pool.query(queryText).then((result) => {
+        console.log(result);
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log(error);
+        res.sendStatus(500);
+    })
 });
 
 app.post('/song', (req, res) => {
